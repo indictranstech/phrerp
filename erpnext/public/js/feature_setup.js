@@ -183,9 +183,7 @@ pscript.feature_dict = {
 }
 
 $(document).bind('form_refresh', function() {
-	console.log(["sdf",sys_defaults])
 	for(var sys_feat in sys_defaults) {
-		console.log(["sdf",sys_feat])
 		if(sys_defaults[sys_feat]=='0'
 			&& (sys_feat in pscript.feature_dict)) { //"Features to hide" exists
 			if(cur_frm.doc.doctype in pscript.feature_dict[sys_feat]) {
