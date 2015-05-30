@@ -64,6 +64,10 @@ def send_sms(receiver_list, msg, sender_name = ''):
 
 	if frappe.db.get_value('SMS Settings', None, 'sms_gateway_url'):
 		ret = send_via_gateway(arg)
+		print "sending SMS........"
+		print ret
+		if ret:
+			create_sms_log(arg,len(ret))
 		msgprint(ret)
 	else:
 		msgprint(_("Please Update SMS Settings"))
@@ -108,11 +112,11 @@ def scrub_gateway_url(url):
 # Create SMS Log
 # =========================================================
 def create_sms_log(arg, sent_sms):
-	sl = frappe.get_doc('SMS Log')
+	sl = frappe.new_doc('SMS Log')
 	sl.sender_name = arg['sender_name']
 	sl.sent_on = nowdate()
 	sl.receiver_list = cstr(arg['receiver_list'])
 	sl.message = arg['message']
 	sl.no_of_requested_sms = len(arg['receiver_list'])
 	sl.no_of_sent_sms = sent_sms
-	sl.save()
+	sl.save(ignore_permissions=True)
